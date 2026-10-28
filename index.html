@@ -1,0 +1,540 @@
+<title>Forma bakarra</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Eskuz egindako alanbrezko bitxiaren sorkuntza-prozesua: ideia, diseinua, fabrikazioa eta azken pieza.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: kontrol editoriala. Hero irudi-eszena bat (testua ezkerrean, alanbrea eskuinean), ondoren sticky bi zutabe, banda horizontala, gau-eszena iluna eta amaiera argia. */
+:root{
+  --paper:#ebeae5; --paper-2:#dfddd5; --ink:#171613; --mute:#66635b;
+  --gold:#a37c22; --gold-hi:#dcb85f; --night:#0e0d0b; --night-ink:#ece8dc;
+  --line:rgba(23,22,19,.16); --line-night:rgba(236,232,220,.18);
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4.2vw,64px);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;font-weight:400;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,video,svg{max-width:100%;display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+.wrap{padding-left:max(var(--gut),env(safe-area-inset-left,0px));padding-right:max(var(--gut),env(safe-area-inset-right,0px));width:100%}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--paper);padding:8px 14px;z-index:100}
+.skip:focus{left:8px}
+.kick{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 18px}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;text-wrap:balance;letter-spacing:-.01em;line-height:.98}
+h2{font-size:clamp(40px,6vw,92px)}
+em{font-style:italic}
+
+/* NAV */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--paper)}
+.nav{position:fixed;left:0;right:0;top:0;z-index:50;padding-top:env(safe-area-inset-top,0px);background:rgba(235,234,229,.82);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);transition:background .5s,color .5s,border-color .5s;border-bottom:1px solid var(--line)}
+.nav.dark{background:rgba(14,13,11,.78);color:var(--night-ink);border-color:var(--line-night)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:56px;gap:16px}
+.brand{font-family:var(--serif);font-size:22px;text-decoration:none;white-space:nowrap}
+.brand i{color:var(--gold)}
+.links{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.links a{font-size:13px;letter-spacing:.04em;text-decoration:none;padding:6px 0;position:relative;opacity:.7;transition:opacity .3s}
+.links a:hover,.links a.act{opacity:1}
+.links a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.links a.act::after{transform:scaleX(1)}
+.burger{display:none;background:none;border:1px solid currentColor;border-radius:99px;padding:6px 14px;font-size:13px;cursor:pointer}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:100%;background:var(--gold);transform:scaleX(0);transform-origin:left}
+@media(max-width:760px){
+  .burger{display:inline-block}
+  .links{position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:0;background:var(--paper);color:var(--ink);padding:8px max(var(--gut),env(safe-area-inset-left,0px)) 16px;border-bottom:1px solid var(--line);display:none}
+  .links.open{display:flex}
+  .links a{display:block;padding:14px 0;font-size:17px;opacity:1}
+}
+
+/* 1. HERO */
+.hero{min-height:100svh;display:flex;align-items:center;padding-top:calc(56px + env(safe-area-inset-top,0px));position:relative;background:var(--paper)}
+.hero-in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(16px,3vw,56px);align-items:center;padding-block:32px}
+.hero h1{font-size:clamp(46px,7.2vw,118px);line-height:.94}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.08em}
+.hero h1 .ln span{display:block}
+.hero h1 .gold{color:var(--gold);font-style:italic}
+.hero-sub{max-width:34ch;color:var(--mute);margin:28px 0 0;font-size:15px}
+.hint{margin-top:36px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.hint b{display:block;width:44px;height:1px;background:var(--mute);transform-origin:left;animation:hintline 2.4s ease-in-out infinite}
+@keyframes hintline{0%,100%{transform:scaleX(.2)}50%{transform:scaleX(1)}}
+.stage-h{position:relative;width:100%}
+.stage-h svg{width:100%;height:auto;overflow:visible}
+.wire{fill:none;stroke:var(--gold);stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+.pencil{fill:none;stroke:#7b776c;stroke-width:1;opacity:.55;stroke-linecap:round}
+.guide{fill:none;stroke:var(--line);stroke-width:1;stroke-dasharray:3 6}
+#heroPhoto{opacity:0;filter:drop-shadow(0 18px 18px rgba(40,30,10,.28))}
+.hero-cap{position:absolute;left:0;bottom:-6px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.hero-cap span{transition:opacity .4s}
+.hero-cap .b{position:absolute;left:0;top:0;opacity:0;white-space:nowrap}
+@media(max-width:899px){
+  .hero{min-height:0;align-items:flex-start}
+  .hero-in{grid-template-columns:1fr;padding-block:28px 56px}
+  .hint{display:none}
+  .stage-h{margin-top:12px;padding-bottom:26px}
+}
+
+/* 2. IDEIA */
+.ideia{background:var(--paper-2);padding-block:clamp(72px,10vw,150px)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px 56px;align-items:end;margin-bottom:clamp(40px,6vw,88px)}
+.sec-head p{margin:0;color:var(--mute);max-width:46ch;justify-self:end}
+@media(max-width:760px){.sec-head{grid-template-columns:1fr}.sec-head p{justify-self:start}}
+.split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(24px,5vw,90px);align-items:start}
+.pin-stage{position:sticky;top:calc(80px + env(safe-area-inset-top,0px))}
+.stage{position:relative;aspect-ratio:5/5.4;background:var(--paper);border:1px solid var(--line);overflow:hidden}
+.layer{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s}
+.layer.on{opacity:1;visibility:visible}
+.layer img.cover{width:100%;height:100%;object-fit:cover;object-position:50% 62%}
+.layer svg{position:absolute;inset:0;width:100%;height:100%;padding:7%}
+.tag{position:absolute;left:14px;bottom:12px;right:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.chip{border:1px solid var(--line);background:rgba(235,234,229,.9);padding:3px 9px;border-radius:99px}
+.chip.g{color:var(--gold);border-color:var(--gold)}
+.w2{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linejoin:round;transition:stroke-dashoffset 2.6s cubic-bezier(.5,0,.2,1)}
+.node{fill:var(--paper);stroke:var(--gold);stroke-width:1.4;opacity:0;transition:opacity .6s}
+.hdl{stroke:var(--gold);stroke-width:.8;opacity:0;transition:opacity .6s}
+.ctrl{fill:var(--gold);opacity:0;transition:opacity .6s}
+.layer.on .node,.layer.on .hdl,.layer.on .ctrl{opacity:1;transition-delay:1.6s}
+.dim{stroke:var(--mute);stroke-width:1;fill:none}
+.dimt{font-family:var(--mono);font-size:15px;fill:var(--mute);letter-spacing:.06em}
+.layer .ph{opacity:0;transition:opacity 1.4s .9s;filter:drop-shadow(0 10px 12px rgba(40,30,10,.25))}
+.layer.on .ph{opacity:1}
+.steps{display:flex;flex-direction:column;gap:clamp(160px,34vh,320px);padding-block:8vh 30vh}
+.step{opacity:.28;transition:opacity .5s}
+.step.on{opacity:1}
+.step .n{font-family:var(--mono);font-size:12px;color:var(--gold);letter-spacing:.14em}
+.step h3{font-size:clamp(30px,3.6vw,54px);margin:10px 0 16px}
+.step p{margin:0;color:var(--mute);max-width:40ch}
+.note{margin-top:clamp(40px,6vw,80px);padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--mute);max-width:70ch}
+@media(max-width:899px){
+  .split{grid-template-columns:1fr}
+  .pin-stage{top:calc(60px + env(safe-area-inset-top,0px));z-index:5;background:var(--paper-2);padding-bottom:10px}
+  .stage{aspect-ratio:auto;height:min(48svh,420px)}
+  .steps{gap:46svh;padding-block:6svh 36svh}
+  .step{background:transparent}
+}
+
+.why{margin-top:clamp(64px,9vw,130px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,5vw,90px);align-items:center;padding-top:clamp(40px,6vw,80px);border-top:1px solid var(--line)}
+.nest{position:relative;background:var(--paper);border:1px solid var(--line);aspect-ratio:1/.9;display:grid;place-items:center}
+.nest-in{position:relative;width:78%}
+.nest-in img{width:100%;height:auto;filter:drop-shadow(0 18px 16px rgba(40,30,10,.3))}
+.pt{position:absolute;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:1.5px solid var(--gold);background:var(--paper)}
+.pt span{position:absolute;top:50%;transform:translateY(-50%);left:26px;white-space:nowrap;font-family:var(--serif);font-style:italic;font-size:clamp(22px,2.4vw,32px);color:var(--ink)}
+.pt.l span{left:auto;right:26px}
+.why h3{font-size:clamp(34px,4.4vw,66px);margin-bottom:22px}
+.why p{margin:0 0 16px;max-width:46ch;font-size:17px;outline-offset:6px;cursor:text}
+.why .hint2{font-size:12.5px;color:var(--mute)}
+@media(max-width:899px){.why{grid-template-columns:1fr}}
+/* 3. PROZESUA */
+.proc{background:var(--paper);padding-block:clamp(72px,10vw,150px) clamp(48px,6vw,90px);position:relative}
+.strip-pin{position:relative;overflow:hidden}
+.track{display:flex;gap:clamp(28px,5vw,80px);padding:60px max(var(--gut),env(safe-area-inset-left,0px)) 80px;width:max-content;position:relative}
+.wire-line{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wire-line path{fill:none;stroke:var(--gold);stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.card{position:relative;z-index:1;width:clamp(230px,24vw,330px);flex:none}
+.card:nth-child(even){margin-top:80px}
+.vid{aspect-ratio:9/16;width:100%;background:var(--paper-2);overflow:hidden;position:relative;box-shadow:0 30px 50px -30px rgba(30,24,10,.45)}
+.vid video{width:100%;height:100%;object-fit:cover}
+.card figcaption{margin-top:14px;display:grid;gap:3px}
+.card .t{font-family:var(--serif);font-size:26px;line-height:1.05}
+.card .s{font-size:13px;color:var(--mute)}
+.card .f{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+@media(max-width:899px){
+  .strip-pin{overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .card{scroll-snap-align:center;width:min(70vw,300px)}
+  .card:nth-child(even){margin-top:40px}
+  .track{padding-top:30px}
+}
+.macros{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:clamp(40px,5vw,72px)}
+.mac{background:none;border:0;padding:0;cursor:zoom-in;text-align:left;display:grid;gap:8px;align-content:start}
+.mac .im{aspect-ratio:1;overflow:hidden;background:var(--paper-2)}
+.mac img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.6,.2,1)}
+.mac:hover img,.mac:focus-visible img{transform:scale(1.08)}
+.mac span{font-size:12.5px;color:var(--mute);line-height:1.35}
+.mac b{display:block;font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}
+@media(max-width:899px){.macros{grid-template-columns:repeat(2,minmax(0,1fr))}.macros .mac:last-child{grid-column:1/-1}.macros .mac:last-child .im{aspect-ratio:2/1}}
+
+/* 4. PRODUKTUA */
+.night{background:var(--night);color:var(--night-ink);position:relative;overflow:hidden}
+.night .kick{color:var(--gold-hi)}
+.night-in{min-height:100svh;display:grid;align-items:center;padding-block:calc(70px + env(safe-area-inset-top,0px)) 40px;position:relative}
+.glow{position:absolute;inset:0;background:radial-gradient(ellipse 55% 45% at 50% 52%,rgba(214,170,80,.22),rgba(14,13,11,0) 70%);pointer-events:none}
+.prod{position:relative;width:min(92%,960px);margin-inline:auto;perspective:1200px}
+.prod-t{position:relative;transform-style:preserve-3d;transition:transform .25s ease-out}
+.prod img.d{width:100%;height:auto;filter:brightness(1.7) contrast(1.08) saturate(1.35) drop-shadow(0 40px 40px rgba(0,0,0,.65))}
+.shine{position:absolute;inset:0;-webkit-mask:url(img/usoa.png) center/100% 100% no-repeat;mask:url(img/usoa.png) center/100% 100% no-repeat;background:linear-gradient(105deg,rgba(255,244,214,0) 38%,rgba(255,244,214,.95) 50%,rgba(255,244,214,0) 62%) 0% 0%/280% 100% no-repeat;background-position:var(--sx,100%) 0;mix-blend-mode:screen;pointer-events:none}
+.hot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:1px solid var(--gold-hi);background:rgba(14,13,11,.4);cursor:zoom-in;display:grid;place-items:center;color:var(--gold-hi);font-size:20px;line-height:1;padding:0}
+.hot::after{content:"";position:absolute;inset:-1px;border-radius:50%;border:1px solid var(--gold-hi);animation:pulse 2.6s ease-out infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.9);opacity:0}}
+.hot span{position:absolute;left:54px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;pointer-events:none}
+.hot.r span{left:auto;right:54px}
+.say{position:absolute;font-family:var(--serif);font-style:italic;font-size:clamp(20px,2.6vw,38px);color:var(--night-ink);opacity:.9;max-width:12ch;line-height:1.05}
+.say.s1{left:0;top:6%}.say.s2{right:0;top:30%;text-align:right}.say.s3{left:3%;bottom:2%}
+.night-ring{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,6vw,100px);align-items:center;padding-block:clamp(40px,8vw,120px) clamp(72px,10vw,150px);position:relative}
+.night-ring img{width:min(100%,520px);margin-inline:auto;filter:brightness(1.12) contrast(1.05) drop-shadow(0 30px 30px rgba(0,0,0,.7))}
+.night-ring h2{font-size:clamp(36px,5vw,76px)}
+.night-ring p{color:rgba(236,232,220,.7);max-width:40ch;margin:20px 0 0}
+@media(max-width:899px){
+  .night-in{padding-top:calc(76px + env(safe-area-inset-top,0px));align-content:center}
+  .say{display:none}
+  .hot span{display:none}
+  .night-ring{grid-template-columns:1fr}
+}
+
+/* 5. AMAIERA */
+.end{background:var(--paper);padding-block:clamp(80px,11vw,170px)}
+.end-top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:center}
+.end-top .pic{position:relative;aspect-ratio:1/.9;display:grid;place-items:center;background:var(--paper-2)}
+.end-top .pic img{width:80%;filter:drop-shadow(0 22px 18px rgba(40,30,10,.3))}
+.quote{font-family:var(--serif);font-size:clamp(44px,6.6vw,108px);line-height:.95;text-wrap:balance}
+.quote i{color:var(--gold)}
+.info{margin-top:clamp(56px,8vw,120px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(24px,5vw,80px)}
+.row{padding:20px 0 22px;border-top:1px solid var(--line);display:grid;gap:8px}
+.row dt{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.row dd{margin:0;font-family:var(--serif);font-size:clamp(24px,2.5vw,34px);line-height:1.15;min-height:1.2em;outline-offset:6px;cursor:text;overflow-wrap:anywhere}
+.row dd:empty::before{content:attr(data-ph);color:var(--gold);opacity:.75;border-bottom:1px dashed var(--gold)}
+.row .obs{font-size:13px;color:var(--mute)}
+.edit-note{grid-column:1/-1;font-size:13px;color:var(--mute);margin:0 0 24px}
+@media(max-width:760px){.end-top,.info{grid-template-columns:1fr}}
+footer{background:var(--paper);border-top:1px solid var(--line);padding-block:26px calc(30px + env(safe-area-inset-bottom,0px))}
+.foot{display:flex;flex-wrap:wrap;gap:16px 32px;align-items:center;justify-content:space-between;font-size:13px;color:var(--mute)}
+.mot{background:none;border:1px solid var(--line);border-radius:99px;padding:7px 16px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+.mot[aria-pressed="true"]{border-color:var(--gold);color:var(--gold)}
+
+/* ZOOM */
+.zoom{position:fixed;inset:0;z-index:90;background:rgba(10,9,7,.94);display:grid;grid-template-rows:auto minmax(0,1fr) auto;color:var(--night-ink)}
+.zoom[hidden]{display:none}
+.zbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:max(12px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-left,0px)) 12px}
+.zbar p{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}
+.zbtns{display:flex;gap:8px}
+.zbtns button{width:42px;height:42px;border-radius:50%;border:1px solid var(--line-night);background:none;cursor:pointer;font-size:20px;color:var(--night-ink)}
+.zview{overflow:hidden;touch-action:none;cursor:grab;position:relative}
+.zview:active{cursor:grabbing}
+.zview img{position:absolute;left:50%;top:50%;max-width:none;width:min(92vw,86svh);height:auto;transform-origin:center;user-select:none;-webkit-user-drag:none}
+.zcap{padding:12px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px));font-size:13px;opacity:.75;text-align:center}
+
+@media(prefers-reduced-motion:reduce){
+  .hint b,.hot::after{animation:none}
+  *{transition-duration:.01s!important;transition-delay:0s!important}
+}
+.rm .hint b,.rm .hot::after{animation:none}
+.rm *{transition-duration:.01s!important;transition-delay:0s!important}
+</style>
+
+<a class="skip" href="#hasiera">Edukira joan</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#hasiera" data-go="hasiera" aria-label="Hasiera: Itsasoa eta Urrea">Itsasoa <i>+</i> Urrea</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="links">Menua</button>
+    <ul class="links" id="links">
+      <li><a href="#hasiera" data-go="hasiera">Hasiera</a></li>
+      <li><a href="#ideia" data-go="ideia">Ideia</a></li>
+      <li><a href="#prozesua" data-go="prozesua">Prozesua</a></li>
+      <li><a href="#produktua" data-go="produktua">Produktua</a></li>
+      <li><a href="#informazioa" data-go="informazioa">Informazioa</a></li>
+    </ul>
+  </div>
+  <div class="prog" id="prog"></div>
+</header>
+
+<main>
+<!-- 1 -->
+<section class="hero" id="hasiera" aria-labelledby="h1">
+  <div class="wrap hero-in">
+    <div>
+      <p class="kick">Ideiaren jaiotza</p>
+      <h1 id="h1"><span class="ln"><span>Ideia bat.</span></span><span class="ln"><span>Material bat.</span></span><span class="ln"><span class="gold">Forma bakarra.</span></span></h1>
+      <p class="hero-sub">Lerro fin batetik hasi zen. Eskuz bihurtutako alanbre bat, itsasoaren lasaitasuna eta urrearen distira.</p>
+      <div class="hint"><b></b>Egin behera</div>
+    </div>
+    <div class="stage-h" id="heroStage">
+      <svg id="heroSvg" viewBox="0 0 881 725" role="img" aria-label="Alanbrezko usoaren siluetaren marrazkia, lerro fin gisa marraztuz doana eta azkenean benetako piezaren argazkira igarotzen dena">
+        <ellipse class="guide" cx="440" cy="370" rx="400" ry="320"/>
+        <line class="guide" x1="20" y1="372" x2="860" y2="372"/>
+        <line class="guide" x1="440" y1="20" x2="440" y2="705"/>
+        <g id="pencils"></g>
+        <image id="heroPhoto" href="img/usoa.png" x="0" y="0" width="881" height="725"/>
+        <path id="wire" class="wire" d="M847.3 334.4C845.9 332.6 843.9 329.9 840.0 328.9C836.1 327.9 831.7 327.0 824.0 328.2C816.3 329.5 813.7 333.7 794.0 336.4C774.3 339.0 727.0 341.5 706.0 344.1C685.0 346.6 685.7 349.3 668.0 351.9C650.3 354.5 616.3 358.7 600.0 359.5C583.7 360.3 576.8 357.9 570.0 356.7C563.2 355.6 562.3 354.3 559.0 352.6C555.7 351.0 553.1 349.7 550.0 346.9C546.9 344.1 542.5 339.6 540.4 336.0C538.3 332.4 535.5 336.8 537.4 325.0C539.2 313.2 548.1 284.2 551.2 265.0C554.3 245.8 555.2 228.0 556.0 210.0C556.8 192.0 555.2 172.7 556.0 157.0C556.8 141.3 560.4 124.0 560.5 116.0C560.7 108.0 558.8 110.4 557.1 108.8C555.3 107.3 560.0 103.8 550.0 106.7C540.0 109.6 513.8 119.4 497.0 126.1C480.2 132.7 463.8 138.9 449.0 146.4C434.2 153.9 419.7 162.3 408.0 170.9C396.3 179.5 389.9 186.5 379.0 198.0C368.1 209.5 352.3 227.7 342.8 240.0C333.4 252.3 329.0 258.3 322.4 272.0C315.7 285.7 307.7 306.0 303.2 322.0C298.7 338.0 297.3 359.2 295.4 368.0C293.5 376.8 293.2 372.9 291.8 374.6C290.4 376.4 289.6 377.6 286.9 378.5C284.3 379.5 279.5 381.1 276.0 380.3C272.5 379.5 268.9 377.1 265.9 373.9C262.9 370.7 261.6 369.0 257.9 361.0C254.1 353.0 247.5 334.0 243.3 326.0C239.1 318.0 236.3 316.6 232.9 313.0C229.6 309.4 228.5 307.5 223.0 304.6C217.5 301.7 210.2 297.5 200.0 295.6C189.8 293.6 172.5 292.7 162.0 293.0C151.5 293.3 144.3 294.6 137.0 297.2C129.7 299.9 128.5 297.5 118.2 308.8C108.0 320.1 83.9 354.4 75.4 365.0C66.8 375.6 71.1 369.8 67.0 372.6C62.9 375.5 54.2 379.2 50.9 382.3C47.7 385.4 47.1 388.3 47.5 391.0C47.9 393.7 49.0 396.3 53.2 398.7C57.5 401.1 66.4 402.6 73.0 405.5C79.6 408.4 86.7 412.1 93.0 416.2C99.3 420.3 106.5 426.3 111.0 430.2C115.5 434.2 117.1 436.0 119.9 440.0C122.8 444.0 125.4 447.2 128.0 454.0C130.6 460.8 132.9 473.3 135.5 481.0C138.0 488.7 137.8 489.8 143.5 500.0C149.1 510.2 159.7 525.5 169.2 542.0C178.8 558.5 192.0 585.2 200.6 599.0C209.1 612.8 213.5 617.4 220.6 625.0C227.7 632.6 236.9 640.0 243.0 644.6C249.1 649.3 251.2 650.0 257.0 652.8C262.8 655.6 266.2 658.0 278.0 661.4C289.8 664.8 304.7 669.5 328.0 673.2C351.3 677.0 392.7 680.6 418.0 684.1C443.3 687.5 465.8 692.2 480.0 693.8C494.2 695.3 496.0 694.1 503.0 693.5C510.0 693.0 513.2 692.5 522.0 690.4C530.8 688.4 546.0 683.0 556.0 681.3C566.0 679.6 576.5 680.8 582.0 680.1C587.5 679.3 587.2 677.9 588.7 676.6C590.3 675.2 590.9 673.5 591.3 671.9C591.7 670.3 593.6 671.3 591.1 667.0C588.5 662.7 578.6 650.3 575.8 646.0C573.0 641.7 574.4 643.0 574.3 641.0C574.2 639.0 574.5 636.0 575.2 634.1C576.0 632.1 577.4 630.5 578.8 629.3C580.3 628.1 578.8 627.4 584.0 626.6C589.2 625.9 604.7 625.9 609.8 624.8C614.8 623.8 613.3 622.1 614.3 620.5C615.2 618.8 616.1 617.6 615.5 615.0C614.9 612.4 617.0 613.3 610.6 605.0C604.1 596.7 582.7 573.3 576.7 565.0C570.7 556.7 574.3 558.1 574.5 555.0C574.8 551.9 576.7 548.7 578.4 546.4C580.0 544.0 581.9 542.5 584.2 541.1C586.5 539.6 584.2 538.5 592.0 537.5C599.8 536.5 617.7 537.4 631.0 535.1C644.3 532.8 655.8 529.4 672.0 523.6C688.2 517.8 715.3 506.2 728.0 500.2C740.7 494.2 736.8 496.4 748.0 487.6C759.2 478.9 785.0 456.8 795.0 447.9C805.0 438.9 803.2 441.0 807.8 434.0C812.4 427.0 818.4 416.3 822.7 406.0C827.0 395.7 829.7 382.0 833.8 372.0C837.8 362.0 844.7 351.3 847.1 346.0C849.6 340.7 848.5 341.9 848.5 340.0C848.6 338.1 848.7 336.3 847.3 334.4Z"/>
+      </svg>
+      <div class="hero-cap" aria-hidden="true"><span class="a">Marra fina</span><span class="b">Marra fina, alanbre bihurtua</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="ideia" id="ideia" aria-labelledby="h-ideia">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="kick">Diseinuaren garapena</p><h2 id="h-ideia">Ideiatik <em>formara</em></h2></div>
+      <p>Hiru une, zirriborro-orritik amaierako proportzioetara. Behera egin ahala, usoa pixkanaka definitzen da.</p>
+    </div>
+    <div class="split">
+      <div class="pin-stage">
+        <div class="stage" id="ideaStage">
+          <div class="layer on" data-l="0">
+            <img class="cover" src="img/zirriborroa.jpg" alt="Ideia-orriaren argazkia: itsasoa eta urrea hitzak, eta eskuz marraztutako eskumuturreko eta alanbrezko espiralaren zirriborroak">
+            <div class="tag"><span class="chip g">Zure ideia-orria</span><span class="chip">Itsasoa</span><span class="chip">Lasaitasuna</span><span class="chip">Isiltasuna</span><span class="chip">Urrea</span></div>
+          </div>
+          <div class="layer" data-l="1">
+            <svg viewBox="0 0 881 725" role="img" aria-label="Usoaren ibilbidea ainguratze-puntuekin eta kurba-heldulekuekin"><g id="l1g"></g></svg>
+            <div class="tag"><span class="chip g">Kontzeptuzko irudikapena</span><span class="chip">Kurbak eta aingura-puntuak</span></div>
+          </div>
+          <div class="layer" data-l="2">
+            <svg viewBox="0 0 881 725" role="img" aria-label="Usoaren azken forma proportzio-gidekin eta alboen erlazioarekin"><g id="l2g"></g><image class="ph" href="img/usoa.png" x="0" y="0" width="881" height="725"/></svg>
+            <div class="tag"><span class="chip g">Kontzeptuzko irudikapena</span><span class="chip" id="ratioChip">Zabalera : altuera</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="steps" id="steps">
+        <article class="step on" data-s="0"><span class="n">I</span><h3>Lehen ideia eta forma organikoa</h3><p>Itsasoaren lasaitasuna eta urrearen berotasuna. Ideia berean, eraztuna habia da eta bolatxo zuria arrautza. Paperean, lerro bakarrak mugatzen du gorputz bat eta bi hegal.</p></article>
+        <article class="step" data-s="1"><span class="n">II</span><h3>Alanbrearen kurbak eta egituraren definizioa</h3><p>Siluetaren ibilbidea puntu eta kurbatan zatitzen da. Bakoitzak non biratu behar duen markatzen du.</p></article>
+        <article class="step" data-s="2"><span class="n">III</span><h3>Azken forma eta proportzioen doikuntza</h3><p>Hegalen irekiera, burua eta hanka orekatzen dira. Marra utzi, eta alanbrea gelditzen da.</p></article>
+      </div>
+    </div>
+    <div class="why" id="why">
+      <div class="nest"><div class="nest-in"><img src="img/eraztuna.png" alt="Eraztuna habia gisa: alanbre bihurtuzko korapiloa eta erdian arrautza den bolatxo zuria" loading="lazy"><i class="pt" style="left:54%;top:60%"><span>Arrautza</span></i><i class="pt l" style="left:63%;top:30%"><span>Habia</span></i></div></div>
+      <div>
+        <p class="kick">Piezaren arrazoia</p>
+        <h3>Hegaztia eta bere <em>habia</em></h3>
+        <p contenteditable="true" spellcheck="false" data-k="why1">Usoa eta eraztuna elkarrekin sortu ziren. Usoa hegan dago; eraztuna, berriz, haren habia da: alanbre bihurtuzko korapilo bat, eta erdian bolatxo zuri bat, arrautza.</p>
+        <p contenteditable="true" spellcheck="false" data-k="why2">Hegaztiak hegan egiten du, eta habiara itzultzen da. Bi piezek mugimendu hori kontatzen dute.</p>
+        <p class="hint2">Testu hau zirriborro bat da. Egin klik eta aldatu zure arrazoiekin; zure nabigatzailean gordetzen da.</p>
+      </div>
+    </div>
+    <p class="note">Atal honetako irudiak diseinu-irudikapen artistikoak dira. Benetako fabrikazioa hurrengo atalean dago, zure grabaketekin.</p>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="proc" id="prozesua" aria-labelledby="h-proc">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="kick">Sorkuntza eta fabrikazioa</p><h2 id="h-proc">Eskuak, pintzak <em>eta alanbrea</em></h2></div>
+      <p>Grabaketa errealak, edizio gabe. Pieza bakoitza mahai gainean ikusten da, argi naturalean.</p>
+    </div>
+  </div>
+  <div class="strip-pin" id="strip" tabindex="0" aria-label="Prozesuaren bideo-bilduma, alboratu ezkerrera eta eskuinera">
+    <div class="track" id="track">
+      <svg class="wire-line" viewBox="0 0 2000 800" preserveAspectRatio="none" aria-hidden="true"><path id="trackWire" d="M0 420 C 200 120, 420 700, 700 380 S 1200 60, 1500 420 S 1800 640, 2000 330"/></svg>
+      <figure class="card"><div class="vid"><video muted loop playsinline preload="metadata" poster="img/p3927.jpg" aria-label="Alanbre fina eta bi pintza mahai zuri gainean"><source src="vid/p3927.mp4" type="video/mp4"></video></div><figcaption><span class="f">1 / 4 · Materiala</span><span class="t">Alanbrea eta pintzak</span><span class="s">Alanbre fina eta tresnak, lanerako prest.</span></figcaption></figure>
+      <figure class="card"><div class="vid"><video muted loop playsinline preload="metadata" poster="img/p3929.jpg" aria-label="Eraztuna esku batean, alanbre bihurtuzko korapiloarekin"><source src="vid/p3929.mp4" type="video/mp4"></video></div><figcaption><span class="f">2 / 4 · Eraztuna</span><span class="t">Eraztuna eskuan</span><span class="s">Alanbre bihurtuzko korapiloa eta zilarrezko espirala.</span></figcaption></figure>
+      <figure class="card"><div class="vid"><video muted loop playsinline preload="metadata" poster="img/p3954.jpg" aria-label="Usoaren alanbrezko pieza zinta beltzarekin mahai gainean"><source src="vid/p3954.mp4" type="video/mp4"></video></div><figcaption><span class="f">3 / 4 · Usoa</span><span class="t">Usoa, zintarekin</span><span class="s">Silueta osoa, zinta beltzetik zintzilik.</span></figcaption></figure>
+      <figure class="card"><div class="vid"><video muted loop playsinline preload="metadata" poster="img/p3957.jpg" aria-label="Bi piezak kotoi gainean, paperezko ontzi baten barruan"><source src="vid/p3957.mp4" type="video/mp4"></video></div><figcaption><span class="f">4 / 4 · Ontzia</span><span class="t">Kotoi gainean</span><span class="s">Bi piezak paperezko ontzi batean.</span></figcaption></figure>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="macros" id="macros">
+      <button class="mac" data-zoom="img/xehe-korapiloa.jpg" data-cap="Alanbre bihurtuzko korapiloa eta bolatxo zuria"><div class="im"><img src="img/xehe-korapiloa.jpg" alt="Eraztunaren korapiloa gertutik: alanbre bihurtua eta bolatxo zuria" loading="lazy"></div><span><b>Eraztuna</b>Korapiloa eta bolatxoa</span></button>
+      <button class="mac" data-zoom="img/xehe-espiralak.jpg" data-cap="Zilarrezko espiral-bandea"><div class="im"><img src="img/xehe-espiralak.jpg" alt="Eraztunaren zilarrezko espiral-bandea gertutik" loading="lazy"></div><span><b>Eraztuna</b>Zilarrezko espirala</span></button>
+      <button class="mac" data-zoom="img/xehe-lotura.jpg" data-cap="Zintarekin lotzen duen eraztuntxoa"><div class="im"><img src="img/xehe-lotura.jpg" alt="Usoaren goiko muturra zilarrezko eraztuntxoarekin eta zinta beltzarekin" loading="lazy"></div><span><b>Usoa</b>Lotura-puntua</span></button>
+      <button class="mac" data-zoom="img/xehe-hanka.jpg" data-cap="Hanka: alanbrea makil zuri baten inguruan bilduta"><div class="im"><img src="img/xehe-hanka.jpg" alt="Usoaren hanka alanbrez makil zuri baten inguruan bilduta" loading="lazy"></div><span><b>Usoa</b>Hanka</span></button>
+      <button class="mac" data-zoom="img/xehe-mokoa.jpg" data-cap="Mokoa eta buruaren kurba"><div class="im"><img src="img/xehe-mokoa.jpg" alt="Usoaren mokoa eta buruaren kurba gertutik" loading="lazy"></div><span><b>Usoa</b>Mokoa eta burua</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="night" id="produktua" aria-labelledby="h-prod">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap night-in" id="prodScene">
+    <div>
+      <p class="kick" style="text-align:center" id="h-prod">Azken produktua</p>
+      <div class="prod" id="prod">
+        <div class="prod-t" id="prodT">
+          <img class="d" src="img/usoa.png" alt="Alanbrezko usoa, urre-koloreko alanbre bakarrezko silueta, atzeko plano ilunean" width="881" height="725">
+          <div class="shine" id="shine" aria-hidden="true"></div>
+          <button class="hot" style="left:67%;top:9%" data-zoom="img/xehe-lotura.jpg" data-cap="Lotura-puntua" aria-label="Zooma: lotura-puntua"><b aria-hidden="true">+</b><span>Lotura</span></button>
+          <button class="hot r" style="left:80%;top:87%" data-zoom="img/xehe-hanka.jpg" data-cap="Hanka" aria-label="Zooma: hanka"><b aria-hidden="true">+</b><span>Hanka</span></button>
+          <button class="hot" style="left:7%;top:53%" data-zoom="img/xehe-mokoa.jpg" data-cap="Mokoa eta burua" aria-label="Zooma: mokoa eta burua"><b aria-hidden="true">+</b><span>Mokoa</span></button>
+        </div>
+        <p class="say s1">Eskuz egina.</p><p class="say s2">Lerroa besterik ez.</p><p class="say s3">Distira, argiak ukitzen duen lekuan.</p>
+      </div>
+    </div>
+  </div>
+  <div class="wrap night-ring">
+    <img src="img/eraztuna.png" alt="Eraztuna: zilarrezko espiral-banda eta alanbre bihurtuzko korapiloa bolatxo zuriarekin" width="686" height="580" loading="lazy">
+    <div><p class="kick">Bigarren pieza</p><h2>Eraztuna</h2><p>Habia bat: zilarrezko espirala oinarri, alanbre bihurtuzko korapiloa habia, eta erdian bolatxo zuria, arrautza. Usoaren ondoan, hegaztiaren etxea.</p></div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="end" id="informazioa" aria-labelledby="h-end">
+  <div class="wrap">
+    <div class="end-top">
+      <div class="pic"><img src="img/usoa.png" alt="Alanbrezko usoa, argi atzeko planoan" loading="lazy"></div>
+      <div><p class="kick">Amaiera</p><h2 class="quote" id="h-end">Forma bakoitzak <i>istorio</i> bat du.</h2></div>
+    </div>
+    <dl class="info" id="info">
+      <p class="edit-note">Eremu hauek editagarriak dira: egin klik eta idatzi. Zure nabigatzailean gordetzen dira.</p>
+      <div class="row"><dt>Piezaren izena</dt><dd contenteditable="true" spellcheck="false" data-k="izena" data-ph="Idatzi izena"></dd></div>
+      <div class="row"><dt>Diseinu-estudioa</dt><dd contenteditable="true" spellcheck="false" data-k="estudioa" data-ph="Idatzi estudioaren izena"></dd></div>
+      <div class="row"><dt>Materiala eta teknikak</dt><dd contenteditable="true" spellcheck="false" data-k="materiala" data-ph="Idatzi materiala eta teknikak"></dd><span class="obs">Irudietan ikusten dena: urre-koloreko alanbrea, zilarrezko espirala eta bolatxo zuria.</span></div>
+      <div class="row"><dt>Pieza bakarra edo seriekoa</dt><dd contenteditable="true" spellcheck="false" data-k="seria" data-ph="Pieza bakarra edo serie mugatua"></dd></div>
+      <div class="row"><dt>Diseinuaren kontzeptua</dt><dd contenteditable="true" spellcheck="false" data-k="kontzeptua">Itsasoa eta urrea: lasaitasuna eta isiltasuna alanbre fin batean.</dd></div>
+      <div class="row"><dt>Harremanetarako</dt><dd contenteditable="true" spellcheck="false" data-k="kontaktua" data-ph="Idatzi helbidea edo esteka"></dd></div>
+    </dl>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot"><span>Forma bakarra · eskuz egindako alanbrezko bitxiak</span><button class="mot" id="mot" aria-pressed="false">Mugimendua murriztu</button></div>
+</footer>
+
+<div class="zoom" id="zoom" role="dialog" aria-modal="true" aria-label="Xehetasunaren zooma" hidden>
+  <div class="zbar"><p id="zcapT">Xehetasuna</p><div class="zbtns"><button id="zin" aria-label="Handitu">+</button><button id="zout" aria-label="Txikitu">&minus;</button><button id="zx" aria-label="Itxi">&times;</button></div></div>
+  <div class="zview" id="zview"><img id="zimg" alt=""></div>
+  <div class="zcap">Arrastatu mugitzeko. Gurpila edo + / − zoomerako. Esc ixteko.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const NS='http://www.w3.org/2000/svg';
+const sysReduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let userReduce=false; try{userReduce=localStorage.getItem('fb-reduce')==='1'}catch(e){}
+let reduced=sysReduce||userReduce;
+const D=$('#wire').getAttribute('d');
+const hasG=!!(window.gsap&&window.ScrollTrigger);
+if(hasG) gsap.registerPlugin(ScrollTrigger);
+function el(n,a,p){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+
+/* NAV */
+const nav=$('#nav'),links=$('#links'),burger=$('#burger');
+burger.addEventListener('click',()=>{const o=links.classList.toggle('open');burger.setAttribute('aria-expanded',o)});
+$$('[data-go]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.getElementById(a.dataset.go);links.classList.remove('open');burger.setAttribute('aria-expanded','false');if(t){const y=a.dataset.go==='hasiera'?0:t.getBoundingClientRect().top+window.scrollY-(a.dataset.go==='ideia'||a.dataset.go==='prozesua'?0:0);window.scrollTo({top:y,behavior:reduced?'auto':'smooth'})}}));
+const prog=$('#prog');
+function onScroll(){const h=document.documentElement.scrollHeight-innerHeight;prog.style.transform='scaleX('+(h>0?Math.min(1,scrollY/h):0)+')';
+  const pr=$('#produktua').getBoundingClientRect();nav.classList.toggle('dark',pr.top<60&&pr.bottom>60);
+  let cur='hasiera';['hasiera','ideia','prozesua','produktua','informazioa'].forEach(id=>{const r=document.getElementById(id).getBoundingClientRect();if(r.top<innerHeight*.4)cur=id});
+  $$('.links a').forEach(a=>a.classList.toggle('act',a.dataset.go===cur))}
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);onScroll();
+
+/* SVG HELPERS */
+function dashSet(p){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;return L}
+/* Pencil sketch strokes */
+const pg=$('#pencils');
+[[2,-3,.4],[-3,2,-.5],[1,4,.2]].forEach((t,i)=>{const p=el('path',{class:'pencil',d:D,transform:`translate(${t[0]} ${t[1]}) rotate(${t[2]} 440 360)`},pg)});
+const pencils=$$('.pencil'),wire=$('#wire');
+
+/* IDEIA layers */
+const l1=$('#l1g'),l2=$('#l2g');
+const nums=D.match(/-?\d+\.?\d*/g).map(Number);
+const pts=[];for(let i=0;i<nums.length;i+=2)pts.push([nums[i],nums[i+1]]);
+const w1=el('path',{class:'w2',d:D},l1);
+for(let i=1;i+2<pts.length;i+=3){const a=pts[i-1],c1=pts[i],c2=pts[i+1],b=pts[i+2];
+  if((i-1)/3%2===0){el('line',{class:'hdl',x1:a[0],y1:a[1],x2:c1[0],y2:c1[1]},l1);el('line',{class:'hdl',x1:b[0],y1:b[1],x2:c2[0],y2:c2[1]},l1);
+    el('circle',{class:'ctrl',cx:c1[0],cy:c1[1],r:2.6},l1);el('circle',{class:'ctrl',cx:c2[0],cy:c2[1],r:2.6},l1)}}
+for(let i=0;i<pts.length;i+=3){if((i/3)%2===0)el('circle',{class:'node',cx:pts[i][0],cy:pts[i][1],r:5},l1)}
+const w2=el('path',{class:'w2',d:D,style:'stroke:var(--gold);stroke-width:2.6'},l2);
+const bb=w2.getBBox();
+const gx=bb.x,gy=bb.y,gw=bb.width,gh=bb.height;
+[1,2].forEach(k=>{el('line',{class:'guide',x1:gx+gw*k/3,y1:gy-10,x2:gx+gw*k/3,y2:gy+gh+10},l2);el('line',{class:'guide',x1:gx-10,y1:gy+gh*k/3,x2:gx+gw+10,y2:gy+gh*k/3},l2)});
+el('rect',{class:'guide',x:gx,y:gy,width:gw,height:gh,style:'stroke:var(--gold);stroke-dasharray:6 6'},l2);
+el('line',{class:'dim',x1:gx,y1:gy+gh+34,x2:gx+gw,y2:gy+gh+34},l2);
+el('line',{class:'dim',x1:gx,y1:gy+gh+26,x2:gx,y2:gy+gh+42},l2);el('line',{class:'dim',x1:gx+gw,y1:gy+gh+26,x2:gx+gw,y2:gy+gh+42},l2);
+const ratio=(gh/gw).toFixed(2).replace('.',',');
+$('#ratioChip').textContent='Zabalera 1 : altuera '+ratio;
+const t=el('text',{class:'dimt',x:gx+gw/2,y:gy+gh+30,'text-anchor':'middle'},l2);t.textContent='1 : '+ratio;
+t.setAttribute('dy','-8');
+const dashed=[w1,w2];dashed.forEach(p=>{const L=dashSet(p);p.dataset.len=L});
+/* wire in ideia 2/3 draws when its layer turns on */
+const layers=$$('.layer'),steps=$$('.step');
+function setStep(i){layers.forEach((l,k)=>{const on=k===i;l.classList.toggle('on',on)});steps.forEach((s,k)=>s.classList.toggle('on',k===i));
+  if(i===1)w1.style.strokeDashoffset=0; if(i===2)w2.style.strokeDashoffset=0;}
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)setStep(+e.target.dataset.s)})},{rootMargin:'-42% 0px -42% 0px'});
+steps.forEach(s=>io.observe(s));
+
+/* ZOOM VIEWER */
+const Z=$('#zoom'),zimg=$('#zimg'),zview=$('#zview');let sc=1,tx=0,ty=0,lastFocus=null;
+function zApply(){zimg.style.transform=`translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${sc})`}
+function zOpen(src,cap,from){lastFocus=from;zimg.src=src;zimg.alt=cap;$('#zcapT').textContent=cap;sc=1;tx=ty=0;zApply();Z.hidden=false;document.body.style.overflow='hidden';$('#zx').focus()}
+function zClose(){Z.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus()}
+function zSet(s){sc=Math.max(1,Math.min(5,s));if(sc===1){tx=ty=0}zApply()}
+$$('[data-zoom]').forEach(b=>b.addEventListener('click',()=>zOpen(b.dataset.zoom,b.dataset.cap,b)));
+$('#zx').addEventListener('click',zClose);$('#zin').addEventListener('click',()=>zSet(sc*1.4));$('#zout').addEventListener('click',()=>zSet(sc/1.4));
+zview.addEventListener('wheel',e=>{e.preventDefault();zSet(sc*(e.deltaY<0?1.15:1/1.15))},{passive:false});
+zview.addEventListener('dblclick',()=>zSet(sc>1?1:2.4));
+let drag=null;zview.addEventListener('pointerdown',e=>{drag={x:e.clientX-tx,y:e.clientY-ty};zview.setPointerCapture(e.pointerId)});
+zview.addEventListener('pointermove',e=>{if(drag&&sc>1){tx=e.clientX-drag.x;ty=e.clientY-drag.y;zApply()}});
+zview.addEventListener('pointerup',()=>drag=null);
+addEventListener('keydown',e=>{if(Z.hidden)return;if(e.key==='Escape')zClose();else if(e.key==='+'||e.key==='=')zSet(sc*1.4);else if(e.key==='-')zSet(sc/1.4);else if(e.key==='ArrowLeft'){tx+=40;zApply()}else if(e.key==='ArrowRight'){tx-=40;zApply()}else if(e.key==='ArrowUp'){ty+=40;zApply()}else if(e.key==='ArrowDown'){ty-=40;zApply()}else if(e.key==='Tab'){const f=$$('button',Z);const i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus()}});
+
+/* VIDEOS */
+const vids=$$('video');
+const vio=new IntersectionObserver(es=>es.forEach(e=>{const v=e.target;if(e.isIntersecting&&!reduced){v.play().catch(()=>{})}else v.pause()}),{threshold:.35});
+vids.forEach(v=>vio.observe(v));
+
+/* EDITABLE INFO */
+$$('#info dd, .why [contenteditable]').forEach(d=>{const k='fb-'+d.dataset.k;try{const v=localStorage.getItem(k);if(v!==null)d.textContent=v}catch(e){}
+  d.addEventListener('input',()=>{try{localStorage.setItem(k,d.textContent)}catch(e){}});
+  d.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();d.blur()}})});
+
+/* MOTION TOGGLE */
+const mot=$('#mot');
+function setMotionUI(){document.documentElement.classList.toggle('rm',reduced);mot.setAttribute('aria-pressed',reduced);mot.textContent=reduced?'Mugimendua murriztuta (aktibatu)':'Mugimendua murriztu';
+  vids.forEach(v=>{if(reduced){v.pause();v.controls=true}else{v.controls=false}})}
+mot.addEventListener('click',()=>{userReduce=!userReduce;try{localStorage.setItem('fb-reduce',userReduce?'1':'0')}catch(e){};reduced=sysReduce||userReduce;setMotionUI();build()});
+
+/* ANIMATIONS */
+let ctx=null,lastDesk=null;
+const shine=$('#shine'),prodT=$('#prodT'),prod=$('#prod');
+function pointer(e){if(reduced)return;const r=prod.getBoundingClientRect();const px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+  prodT.style.transform=`rotateY(${px*8}deg) rotateX(${-py*6}deg)`;shine.style.setProperty('--sx',(100-(px+.5)*100)+'%')}
+prod.addEventListener('pointermove',pointer);prod.addEventListener('pointerleave',()=>{prodT.style.transform=''});
+
+function build(){
+  if(ctx){ctx.revert();ctx=null}
+  /* reset resting state */
+  wire.style.strokeDasharray='';wire.style.strokeDashoffset='';pencils.forEach(p=>{p.style.strokeDasharray='';p.style.strokeDashoffset=''});
+  $('#heroPhoto').style.opacity=reduced?'1':'';
+  if(reduced){wire.style.strokeWidth='1.4';wire.style.opacity='.6';$('.hero-cap .a').style.opacity=0;$('.hero-cap .b').style.opacity=1;
+    shine.style.setProperty('--sx','35%');$('#prodScene').style.background='';$('#produktua').style.backgroundColor='';return}
+  wire.style.strokeWidth='';wire.style.opacity='';$('.hero-cap .a').style.opacity='';$('.hero-cap .b').style.opacity='';
+  if(!hasG){$('#heroPhoto').style.opacity='1';wire.style.strokeWidth='1.4';return}
+  const desk=innerWidth>=900;lastDesk=desk;
+  ctx=gsap.context(()=>{
+    /* hero draw on load */
+    const L=dashSet(wire);pencils.forEach(dashSet);
+    gsap.to(pencils,{strokeDashoffset:0,duration:2.8,ease:'power2.inOut',stagger:.25});
+    gsap.to(wire,{strokeDashoffset:0,duration:3.4,ease:'power2.inOut',delay:.5,onComplete:()=>{wire.style.strokeDasharray='none'}});
+    gsap.from('.hero h1 .ln span',{yPercent:110,duration:1.1,ease:'power3.out',stagger:.14,delay:.15});
+    gsap.from('.hero-sub,.hint,.hero .kick',{opacity:0,y:16,duration:1,delay:.9,stagger:.12});
+    const tl=gsap.timeline({defaults:{ease:'none'}});
+    tl.to('#heroPhoto',{opacity:1,duration:.5},.15).to(wire,{strokeWidth:1.2,opacity:.45,duration:.6},0).to(pencils,{opacity:0,duration:.4},0)
+      .to('.hero-cap .a',{opacity:0,duration:.2},.2).to('.hero-cap .b',{opacity:1,duration:.2},.4).to('#heroSvg',{scale:1.04,transformOrigin:'50% 50%',duration:1},0);
+    ScrollTrigger.create({trigger:desk?'#hasiera':'#heroStage',start:desk?'top top':'top 70%',end:desk?'+=95%':'bottom 35%',pin:desk,scrub:.7,animation:tl,anticipatePin:1});
+    /* process strip */
+    const tw=$('#trackWire');const Lw=dashSet(tw);
+    const strip=$('#strip'),track=$('#track');
+    if(desk){
+      const dist=()=>Math.max(0,track.scrollWidth-innerWidth);
+      gsap.to(track,{x:()=>-dist(),ease:'none',scrollTrigger:{trigger:strip,start:'top 12%',end:()=>'+='+dist(),pin:true,scrub:.6,invalidateOnRefresh:true,anticipatePin:1}});
+      gsap.to(tw,{strokeDashoffset:0,ease:'none',scrollTrigger:{trigger:strip,start:'top 12%',end:()=>'+='+dist(),scrub:.6,invalidateOnRefresh:true}});
+      gsap.utils.toArray('.card .vid').forEach((v,i)=>gsap.fromTo(v,{yPercent:6},{yPercent:-6,ease:'none',scrollTrigger:{trigger:strip,start:'top 12%',end:()=>'+='+dist(),scrub:1}}));
+    }else{tw.style.strokeDashoffset=0}
+    gsap.from('.mac',{opacity:0,y:30,duration:.9,stagger:.1,scrollTrigger:{trigger:'#macros',start:'top 85%'}});
+    /* night: bg light -> dark */
+    const nt=$('#produktua');
+    gsap.fromTo(nt,{backgroundColor:'#ebeae5'},{backgroundColor:'#0e0d0b',ease:'none',scrollTrigger:{trigger:nt,start:'top 85%',end:'top 15%',scrub:true}});
+    gsap.fromTo('.night .glow',{opacity:0},{opacity:1,ease:'none',scrollTrigger:{trigger:nt,start:'top 60%',end:'top 0%',scrub:true}});
+    gsap.fromTo('#prodT',{opacity:0,scale:.92},{opacity:1,scale:1,ease:'none',scrollTrigger:{trigger:nt,start:'top 55%',end:'top 5%',scrub:.6}});
+    gsap.fromTo(shine,{'--sx':'100%'},{'--sx':'-10%',ease:'none',scrollTrigger:{trigger:'#prodScene',start:'top 40%',end:'bottom 20%',scrub:1}});
+    if(desk)gsap.from('.say',{opacity:0,y:14,duration:1,stagger:.3,scrollTrigger:{trigger:'#prod',start:'top 50%'}});
+    gsap.from('.night-ring img',{opacity:0,y:40,duration:1.1,scrollTrigger:{trigger:'.night-ring',start:'top 75%'}});
+    gsap.from('.quote',{opacity:0,y:30,duration:1.1,scrollTrigger:{trigger:'.end-top',start:'top 75%'}});
+    gsap.from('.row',{opacity:0,y:20,duration:.8,stagger:.08,scrollTrigger:{trigger:'#info',start:'top 85%'}});
+  });
+}
+setMotionUI();build();
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{const d=innerWidth>=900;if(d!==lastDesk&&!reduced)build();else if(hasG)ScrollTrigger.refresh()},250)});
+addEventListener('load',()=>{if(hasG)ScrollTrigger.refresh()});
+})();
+</script>
